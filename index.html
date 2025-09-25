@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #4158D0;
+            background: linear-gradient(45deg, #4158D0 0%, #C850C0 50%, #FFCC70 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4158D0;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #4158D0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #3447b3;
+        }
+
+        .success {
+            display: none;
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .success.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Fazer Pedido</h1>
+        
+        <!-- IMPORTANTE: O name="pedidos" e data-netlify="true" ativam o Netlify Forms -->
+        <form name="pedidos" method="POST" data-netlify="true">
+            
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+
+            <div class="form-group">
+                <label for="produto">Produto:</label>
+                <select id="produto" name="produto" required>
+                    <option value="">Escolha...</option>
+                    <option value="Produto A">Produto A</option>
+                    <option value="Produto B">Produto B</option>
+                    <option value="Produto C">Produto C</option>
+                    <option value="Produto D">Produto D</option>
+                    <option value="Produto E">Produto E</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" id="quantidade" name="quantidade" min="1" value="1" required>
+            </div>
+
+            <button type="submit">Enviar Pedido</button>
+        </form>
+
+        <div class="success" id="success">
+            ✅ Pedido enviado com sucesso!
+        </div>
+    </div>
+
+    <script>
+        // Mostra mensagem de sucesso após enviar
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            fetch('/', {
+                method: 'POST',
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams(new FormData(form)).toString()
+            })
+            .then(() => {
+                document.getElementById('success').classList.add('show');
+                form.reset();
+                setTimeout(() => {
+                    document.getElementById('success').classList.remove('show');
+                }, 3000);
+            })
+            .catch(() => alert('Erro ao enviar. Tente novamente.'));
+        });
+    </script>
+</body>
+</html>
