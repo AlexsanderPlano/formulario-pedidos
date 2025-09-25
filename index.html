@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Pedidos</title>
+    <title>Sistema de Pedidos Online</title>
     <style>
         * {
             margin: 0;
@@ -12,36 +12,79 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .container {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
             width: 100%;
             max-width: 450px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
         }
 
-        h1 {
-            color: #333;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            color: white;
+            padding: 35px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
             margin-bottom: 10px;
-            text-align: center;
-            font-size: 32px;
         }
 
-        .subtitle {
-            color: #666;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 14px;
+        .header p {
+            opacity: 0.95;
+            font-size: 1.1rem;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .form-container {
+            padding: 35px 30px;
         }
 
         .form-group {
@@ -50,53 +93,54 @@
 
         label {
             display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-            font-size: 14px;
+            margin-bottom: 10px;
+            color: #374151;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         input, select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
+            background: #fafafa;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
         }
 
         select {
-            cursor: pointer;
-            background: white;
-        }
-
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 40px;
         }
 
         button {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
         button:hover {
@@ -110,10 +154,10 @@
 
         .success {
             display: none;
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
             margin-top: 20px;
             animation: slideIn 0.5s;
@@ -126,7 +170,7 @@
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-20px);
             }
             to {
                 opacity: 1;
@@ -134,136 +178,217 @@
             }
         }
 
-        .info {
-            margin-top: 30px;
-            padding: 15px;
-            background: #f0f9ff;
-            border-left: 4px solid #667eea;
-            border-radius: 4px;
-        }
-
-        .info h3 {
-            color: #667eea;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .info p {
-            color: #666;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .icon {
+        .footer {
+            padding: 25px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
             text-align: center;
-            font-size: 48px;
-            margin-bottom: 20px;
         }
 
+        .features {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-text {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile */
         @media (max-width: 480px) {
-            .container {
-                padding: 30px 20px;
+            .header h1 {
+                font-size: 1.8rem;
             }
             
-            h1 {
-                font-size: 26px;
+            .form-container {
+                padding: 25px 20px;
+            }
+            
+            .features {
+                gap: 15px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="icon">📦</div>
-        <h1>Fazer Pedido</h1>
-        <p class="subtitle">Preencha os campos abaixo</p>
-        
-        <!-- FORMULÁRIO DO NETLIFY - NÃO MUDE O name="pedidos" -->
-        <form name="pedidos" method="POST" data-netlify="true">
-            
-            <div class="form-group">
-                <label for="nome">Nome Completo</label>
-                <input 
-                    type="text" 
-                    id="nome" 
-                    name="nome" 
-                    required
-                    placeholder="Digite seu nome"
-                >
+        <div class="header">
+            <h1>📦 Sistema de Pedidos</h1>
+            <p>Rápido, Seguro e Profissional</p>
+            <div class="status">
+                <span class="status-dot"></span>
+                <span>Sistema Online</span>
             </div>
-
-            <div class="form-group">
-                <label for="produto">Produto</label>
-                <select id="produto" name="produto" required>
-                    <option value="">Selecione um produto</option>
-                    <option value="Produto A">Produto A</option>
-                    <option value="Produto B">Produto B</option>
-                    <option value="Produto C">Produto C</option>
-                    <option value="Produto D">Produto D</option>
-                    <option value="Produto E">Produto E</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="quantidade">Quantidade</label>
-                <input 
-                    type="number" 
-                    id="quantidade" 
-                    name="quantidade" 
-                    min="1" 
-                    max="999"
-                    value="1" 
-                    required
-                    placeholder="Quantidade"
-                >
-            </div>
-
-            <button type="submit">
-                Enviar Pedido
-            </button>
-        </form>
-
-        <div class="success" id="success">
-            ✅ Pedido enviado com sucesso!
         </div>
 
-        <div class="info">
-            <h3>ℹ️ Informações</h3>
-            <p>
-                Após enviar o pedido, você receberá uma confirmação.<br>
-                Todos os pedidos são processados em ordem de chegada.
-            </p>
+        <div class="form-container">
+            <!-- FORMULÁRIO CONFIGURADO COM OS IDs CORRETOS -->
+            <form 
+                id="pedidoForm"
+                action="https://docs.google.com/forms/d/e/1FAIpQLSe55OYADgusay13HbryBLktQP4RdA8-PtjKFv5s_NaIZRJx-Q/formResponse" 
+                method="POST" 
+                target="hidden_iframe"
+                onsubmit="return submitForm();">
+                
+                <div class="form-group">
+                    <label for="nome">
+                        <span>👤 Nome Completo</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="nome"
+                        name="entry.689868843" 
+                        placeholder="Digite seu nome completo"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="produto">
+                        <span>📦 Produto</span>
+                    </label>
+                    <select 
+                        id="produto"
+                        name="entry.1866359410" 
+                        required
+                    >
+                        <option value="">Selecione um produto...</option>
+                        <option value="Produto A - R$ 25,00">Produto A - R$ 25,00</option>
+                        <option value="Produto B - R$ 35,00">Produto B - R$ 35,00</option>
+                        <option value="Produto C - R$ 45,00">Produto C - R$ 45,00</option>
+                        <option value="Produto D - R$ 55,00">Produto D - R$ 55,00</option>
+                        <option value="Produto E - R$ 65,00">Produto E - R$ 65,00</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantidade">
+                        <span>🔢 Quantidade</span>
+                    </label>
+                    <input 
+                        type="number" 
+                        id="quantidade"
+                        name="entry.299160502" 
+                        min="1"
+                        max="999" 
+                        placeholder="Digite a quantidade"
+                        required
+                    >
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 15px; color: #6b7280;">Enviando pedido...</p>
+                </div>
+
+                <button type="submit" id="submitBtn">
+                    Enviar Pedido
+                </button>
+            </form>
+
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="onFormSubmit();"></iframe>
+
+            <div class="success" id="success">
+                ✅ Pedido enviado com sucesso!<br>
+                <small>Você receberá a confirmação em breve.</small>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">Rápido</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-text">Seguro</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">☁️</div>
+                    <div class="feature-text">Na Nuvem</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Script para mostrar mensagem de sucesso
-        const form = document.querySelector('form');
-        
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+        let submitted = false;
+
+        function submitForm() {
+            // Mostra loading
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('submitBtn').style.display = 'none';
             
-            // Envia o formulário para o Netlify
-            fetch('/', {
-                method: 'POST',
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams(new FormData(form)).toString()
-            })
-            .then(() => {
-                // Mostra mensagem de sucesso
+            submitted = true;
+            return true;
+        }
+
+        function onFormSubmit() {
+            if (submitted) {
+                // Esconde loading
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('submitBtn').style.display = 'block';
+                
+                // Mostra sucesso
                 document.getElementById('success').classList.add('show');
                 
-                // Limpa o formulário
-                form.reset();
-                document.getElementById('quantidade').value = '1';
+                // Limpa formulário
+                document.getElementById('pedidoForm').reset();
                 
                 // Esconde mensagem após 5 segundos
-                setTimeout(() => {
+                setTimeout(function() {
                     document.getElementById('success').classList.remove('show');
+                    submitted = false;
                 }, 5000);
-            })
-            .catch((error) => {
-                alert('Erro ao enviar pedido. Tente novamente.');
-                console.error('Erro:', error);
+            }
+        }
+
+        // Adiciona efeito de foco suave
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+                this.parentElement.style.transition = 'transform 0.2s';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
             });
         });
     </script>
