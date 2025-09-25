@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Pedidos</title>
+    <title>Sistema de Pedidos Online</title>
     <style>
         * {
             margin: 0;
@@ -12,168 +12,354 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
         }
 
         .container {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
         }
 
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            color: white;
+            padding: 35px 30px;
             text-align: center;
-            font-size: 28px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.95;
+            font-size: 1.1rem;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .form-container {
+            padding: 35px 30px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: bold;
+            margin-bottom: 10px;
+            color: #374151;
+            font-weight: 600;
+            font-size: 0.95rem;
         }
 
         input, select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
             font-size: 16px;
+            transition: all 0.3s;
+            background: #fafafa;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 40px;
+            cursor: pointer;
         }
 
         button {
             width: 100%;
-            padding: 15px;
-            background: #667eea;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            font-weight: bold;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
         }
 
         button:hover {
-            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .success {
             display: none;
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
-            padding: 15px;
-            border-radius: 5px;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
             margin-top: 20px;
+            animation: slideIn 0.5s;
         }
 
         .success.show {
             display: block;
         }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer {
+            padding: 25px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-text {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .form-container {
+                padding: 25px 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📦 Sistema de Pedidos</h1>
-        
-        <!-- 
-        IMPORTANTE: 
-        - NÃO use data-netlify="true"
-        - NÃO use netlify em nenhum lugar
-        - APENAS Google Forms direto!
-        -->
-        
-        <form 
-            id="meuFormulario"
-            action="https://docs.google.com/forms/d/e/1FAIpQLSe55OYADgusay13HbryBLktQP4RdA8-PtjKFv5s_NaIZRJx-Q/formResponse" 
-            method="POST" 
-            target="iframe_escondido">
-            
-            <div class="form-group">
-                <label>Nome:</label>
-                <input 
-                    type="text" 
-                    name="entry.689868843" 
-                    required>
+        <div class="header">
+            <h1>📦 Sistema de Pedidos</h1>
+            <p>Rápido, Seguro e Ilimitado</p>
+            <div class="status">
+                <span class="status-dot"></span>
+                <span>Sistema Online</span>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Produto:</label>
-                <select 
-                    name="entry.1866359410" 
-                    required>
-                    <option value="">Escolha...</option>
-                    <option value="Produto A">Produto A</option>
-                    <option value="Produto B">Produto B</option>
-                    <option value="Produto C">Produto C</option>
-                    <option value="Produto D">Produto D</option>
-                    <option value="Produto E">Produto E</option>
-                </select>
+        <div class="form-container">
+            <form 
+                id="formPedido"
+                action="https://docs.google.com/forms/d/e/1FAIpQLSdecn5DYq3r_J8WcJZeFAl_0iZB2GspVqbL3K2I0K4Bz0/formResponse" 
+                method="POST" 
+                target="hidden_iframe"
+                onsubmit="return enviarFormulario();">
+                
+                <div class="form-group">
+                    <label for="nome">👤 Nome Completo</label>
+                    <input 
+                        type="text" 
+                        id="nome"
+                        name="entry.2005620554" 
+                        placeholder="Digite seu nome completo"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="produto">📦 Produto</label>
+                    <select 
+                        id="produto"
+                        name="entry.1045781291" 
+                        required
+                    >
+                        <option value="">Selecione um produto...</option>
+                        <option value="Produto A - R$ 25,00">Produto A - R$ 25,00</option>
+                        <option value="Produto B - R$ 35,00">Produto B - R$ 35,00</option>
+                        <option value="Produto C - R$ 45,00">Produto C - R$ 45,00</option>
+                        <option value="Produto D - R$ 55,00">Produto D - R$ 55,00</option>
+                        <option value="Produto E - R$ 65,00">Produto E - R$ 65,00</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantidade">🔢 Quantidade</label>
+                    <input 
+                        type="number" 
+                        id="quantidade"
+                        name="entry.839337160" 
+                        min="1"
+                        max="999" 
+                        placeholder="Digite a quantidade"
+                        required
+                    >
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 15px; color: #6b7280;">Enviando pedido...</p>
+                </div>
+
+                <button type="submit" id="btnEnviar">
+                    Enviar Pedido
+                </button>
+            </form>
+
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="aoEnviar();"></iframe>
+
+            <div class="success" id="mensagemSucesso">
+                ✅ Pedido enviado com sucesso!<br>
+                <small>Você receberá a confirmação em breve.</small>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Quantidade:</label>
-                <input 
-                    type="number" 
-                    name="entry.299160502" 
-                    min="1" 
-                    value="1" 
-                    required>
+        <div class="footer">
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">Instantâneo</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <div class="feature-text">Grátis</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">♾️</div>
+                    <div class="feature-text">Ilimitado</div>
+                </div>
             </div>
-
-            <button type="submit">Enviar Pedido</button>
-        </form>
-
-        <iframe 
-            name="iframe_escondido" 
-            style="display:none;"
-            onload="if(submitted){mostrarSucesso()}">
-        </iframe>
-
-        <div class="success" id="mensagemSucesso">
-            ✅ Pedido enviado com sucesso!
         </div>
     </div>
 
     <script>
-        var submitted = false;
-        
-        // Quando o formulário for enviado
-        document.getElementById('meuFormulario').onsubmit = function() {
-            submitted = true;
-        };
-        
-        // Mostra mensagem de sucesso
-        function mostrarSucesso() {
-            if(submitted) {
-                document.getElementById('mensagemSucesso').classList.add('show');
-                document.getElementById('meuFormulario').reset();
-                submitted = false;
+        let enviado = false;
+
+        function enviarFormulario() {
+            // Mostra loading
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('btnEnviar').style.display = 'none';
+            
+            enviado = true;
+            return true;
+        }
+
+        function aoEnviar() {
+            if (enviado) {
+                // Esconde loading
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('btnEnviar').style.display = 'block';
                 
-                // Esconde mensagem após 3 segundos
+                // Mostra mensagem de sucesso
+                document.getElementById('mensagemSucesso').classList.add('show');
+                
+                // Limpa o formulário
+                document.getElementById('formPedido').reset();
+                
+                // Esconde mensagem após 5 segundos
                 setTimeout(function() {
                     document.getElementById('mensagemSucesso').classList.remove('show');
-                }, 3000);
+                    enviado = false;
+                }, 5000);
             }
         }
     </script>
