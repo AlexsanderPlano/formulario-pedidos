@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Pedidos Online</title>
+    <title>Sistema de Pedidos</title>
     <style>
         * {
             margin: 0;
@@ -12,385 +12,170 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
         }
 
         .container {
-            width: 100%;
-            max-width: 450px;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-            animation: slideUp 0.5s ease;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-            color: white;
-            padding: 35px 30px;
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
             text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            opacity: 0.95;
-            font-size: 1.1rem;
-        }
-
-        .status {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            margin-top: 15px;
-            font-size: 0.9rem;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #4ade80;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .form-container {
-            padding: 35px 30px;
+            font-size: 28px;
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 10px;
-            color: #374151;
-            font-weight: 600;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
         }
 
         input, select {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
             font-size: 16px;
-            transition: all 0.3s;
-            background: #fafafa;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
-        }
-
-        select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 20px;
-            padding-right: 40px;
         }
 
         button {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            background: #667eea;
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
-        }
-
-        button:active {
-            transform: translateY(0);
+            background: #5a67d8;
         }
 
         .success {
             display: none;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: #10b981;
             color: white;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 15px;
+            border-radius: 5px;
             text-align: center;
             margin-top: 20px;
-            animation: slideIn 0.5s;
         }
 
         .success.show {
             display: block;
         }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .footer {
-            padding: 25px;
-            background: #f9fafb;
-            border-top: 1px solid #e5e7eb;
-            text-align: center;
-        }
-
-        .features {
-            display: flex;
-            justify-content: space-around;
-            gap: 20px;
-        }
-
-        .feature {
-            text-align: center;
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-
-        .feature-text {
-            font-size: 0.85rem;
-            color: #6b7280;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .loading.active {
-            display: block;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e5e7eb;
-            border-top-color: #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Mobile */
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .form-container {
-                padding: 25px 20px;
-            }
-            
-            .features {
-                gap: 15px;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📦 Sistema de Pedidos</h1>
-            <p>Rápido, Seguro e Profissional</p>
-            <div class="status">
-                <span class="status-dot"></span>
-                <span>Sistema Online</span>
+        <h1>📦 Sistema de Pedidos</h1>
+        
+        <!-- 
+        IMPORTANTE: 
+        - NÃO use data-netlify="true"
+        - NÃO use netlify em nenhum lugar
+        - APENAS Google Forms direto!
+        -->
+        
+        <form 
+            id="meuFormulario"
+            action="https://docs.google.com/forms/d/e/1FAIpQLSe55OYADgusay13HbryBLktQP4RdA8-PtjKFv5s_NaIZRJx-Q/formResponse" 
+            method="POST" 
+            target="iframe_escondido">
+            
+            <div class="form-group">
+                <label>Nome:</label>
+                <input 
+                    type="text" 
+                    name="entry.689868843" 
+                    required>
             </div>
-        </div>
 
-        <div class="form-container">
-            <!-- FORMULÁRIO CONFIGURADO COM OS IDs CORRETOS -->
-            <form 
-                id="pedidoForm"
-                action="https://docs.google.com/forms/d/e/1FAIpQLSe55OYADgusay13HbryBLktQP4RdA8-PtjKFv5s_NaIZRJx-Q/formResponse" 
-                method="POST" 
-                target="hidden_iframe"
-                onsubmit="return submitForm();">
-                
-                <div class="form-group">
-                    <label for="nome">
-                        <span>👤 Nome Completo</span>
-                    </label>
-                    <input 
-                        type="text" 
-                        id="nome"
-                        name="entry.689868843" 
-                        placeholder="Digite seu nome completo"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="produto">
-                        <span>📦 Produto</span>
-                    </label>
-                    <select 
-                        id="produto"
-                        name="entry.1866359410" 
-                        required
-                    >
-                        <option value="">Selecione um produto...</option>
-                        <option value="Produto A - R$ 25,00">Produto A - R$ 25,00</option>
-                        <option value="Produto B - R$ 35,00">Produto B - R$ 35,00</option>
-                        <option value="Produto C - R$ 45,00">Produto C - R$ 45,00</option>
-                        <option value="Produto D - R$ 55,00">Produto D - R$ 55,00</option>
-                        <option value="Produto E - R$ 65,00">Produto E - R$ 65,00</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="quantidade">
-                        <span>🔢 Quantidade</span>
-                    </label>
-                    <input 
-                        type="number" 
-                        id="quantidade"
-                        name="entry.299160502" 
-                        min="1"
-                        max="999" 
-                        placeholder="Digite a quantidade"
-                        required
-                    >
-                </div>
-
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p style="margin-top: 15px; color: #6b7280;">Enviando pedido...</p>
-                </div>
-
-                <button type="submit" id="submitBtn">
-                    Enviar Pedido
-                </button>
-            </form>
-
-            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="onFormSubmit();"></iframe>
-
-            <div class="success" id="success">
-                ✅ Pedido enviado com sucesso!<br>
-                <small>Você receberá a confirmação em breve.</small>
+            <div class="form-group">
+                <label>Produto:</label>
+                <select 
+                    name="entry.1866359410" 
+                    required>
+                    <option value="">Escolha...</option>
+                    <option value="Produto A">Produto A</option>
+                    <option value="Produto B">Produto B</option>
+                    <option value="Produto C">Produto C</option>
+                    <option value="Produto D">Produto D</option>
+                    <option value="Produto E">Produto E</option>
+                </select>
             </div>
-        </div>
 
-        <div class="footer">
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">⚡</div>
-                    <div class="feature-text">Rápido</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🔒</div>
-                    <div class="feature-text">Seguro</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">☁️</div>
-                    <div class="feature-text">Na Nuvem</div>
-                </div>
+            <div class="form-group">
+                <label>Quantidade:</label>
+                <input 
+                    type="number" 
+                    name="entry.299160502" 
+                    min="1" 
+                    value="1" 
+                    required>
             </div>
+
+            <button type="submit">Enviar Pedido</button>
+        </form>
+
+        <iframe 
+            name="iframe_escondido" 
+            style="display:none;"
+            onload="if(submitted){mostrarSucesso()}">
+        </iframe>
+
+        <div class="success" id="mensagemSucesso">
+            ✅ Pedido enviado com sucesso!
         </div>
     </div>
 
     <script>
-        let submitted = false;
-
-        function submitForm() {
-            // Mostra loading
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('submitBtn').style.display = 'none';
-            
+        var submitted = false;
+        
+        // Quando o formulário for enviado
+        document.getElementById('meuFormulario').onsubmit = function() {
             submitted = true;
-            return true;
-        }
-
-        function onFormSubmit() {
-            if (submitted) {
-                // Esconde loading
-                document.getElementById('loading').classList.remove('active');
-                document.getElementById('submitBtn').style.display = 'block';
+        };
+        
+        // Mostra mensagem de sucesso
+        function mostrarSucesso() {
+            if(submitted) {
+                document.getElementById('mensagemSucesso').classList.add('show');
+                document.getElementById('meuFormulario').reset();
+                submitted = false;
                 
-                // Mostra sucesso
-                document.getElementById('success').classList.add('show');
-                
-                // Limpa formulário
-                document.getElementById('pedidoForm').reset();
-                
-                // Esconde mensagem após 5 segundos
+                // Esconde mensagem após 3 segundos
                 setTimeout(function() {
-                    document.getElementById('success').classList.remove('show');
-                    submitted = false;
-                }, 5000);
+                    document.getElementById('mensagemSucesso').classList.remove('show');
+                }, 3000);
             }
         }
-
-        // Adiciona efeito de foco suave
-        const inputs = document.querySelectorAll('input, select');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.style.transform = 'scale(1.02)';
-                this.parentElement.style.transition = 'transform 0.2s';
-            });
-            
-            input.addEventListener('blur', function() {
-                this.parentElement.style.transform = 'scale(1)';
-            });
-        });
     </script>
 </body>
 </html>
